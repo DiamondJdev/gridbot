@@ -2,7 +2,7 @@
 
 ## What it does
 
-Holds the shared state types, map loader, sensor rig format and scenario loader. Import rules keep this package free of ROS and networking.
+Holds the shared state types, map loader, robot motion, sensor rig format and scenario loader. Import rules keep this package free of ROS and networking.
 
 ## How it fits
 
@@ -17,8 +17,10 @@ Run `uv run pytest core/tests` from the repo root. Run `uv run lint-imports` to 
 - `src/gridbot_core/__init__.py` defines the version.
 - `src/gridbot_core/types.py` defines poses, velocities and the 20 Hz tick.
 - [`world`](src/gridbot_core/world/README.md) loads maps and converts coordinates.
+- [`sim`](src/gridbot_core/sim/README.md) moves the robot and produces odometry.
 - [`sensors`](src/gridbot_core/sensors/README.md) defines rigs.
 - [`scenario`](src/gridbot_core/scenario/README.md) defines and loads scenarios.
 - `tests/test_boundaries.py` checks the version and exercises the import rules.
 - `tests/test_scenario.py` checks config loading and its error messages.
 - `tests/test_world.py` checks map loading and coordinates.
+- `tests/test_sim.py` checks motion, collisions and odometry.

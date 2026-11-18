@@ -12,6 +12,7 @@ REQUIRED_READMES = (
     "core",
     "core/src/gridbot_core/scenario",
     "core/src/gridbot_core/sensors",
+    "core/src/gridbot_core/sim",
     "core/src/gridbot_core/world",
     "runner",
     "gateway",
