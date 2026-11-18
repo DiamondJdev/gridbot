@@ -1,6 +1,9 @@
 [dependency-groups]
 dev = ["ruff", "pyright", "pytest", "import-linter", "pre-commit"]
 
+[tool.uv]
+required-version = "==0.9.5"
+
 [tool.uv.workspace]
 members = ["core", "runner"]
 
