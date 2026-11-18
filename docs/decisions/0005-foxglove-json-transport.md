@@ -1,4 +1,4 @@
-# 0006 · Foxglove JSON transport
+# 0005 · Foxglove JSON transport
 
 ## Context
 

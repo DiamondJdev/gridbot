@@ -57,7 +57,7 @@ Screenshots land in `artifacts/screenshots/drive-01-<tick>.png`. An agent and th
 
 **Files:**
 
-- Create: `docs/decisions/0006-foxglove-json-transport.md`
+- Create: `docs/decisions/0005-foxglove-json-transport.md`
 - Modify: `runner/pyproject.toml`, `gateway/package.json`, `uv.lock`, `pnpm-lock.yaml`
 
 The spec lists these as assumptions to confirm. SDK call names in later tasks come from this spike, so nothing below hard-codes them.
@@ -275,7 +275,7 @@ export type ServerMessage =
 export type TestCommand = { op: "step"; count: number }; // integer, 1 to 1000
 ```
 
-Settings: `GRIDBOT_RUNTIME_URL` (default `ws://127.0.0.1:8765`), `GRIDBOT_PORT` (8080), `GRIDBOT_UI_DIR`, `GRIDBOT_TEST_CONTROL`. The runtime socket offers both subprotocols listed in decision 0006. Browsers connect at `/ws`. `/healthz` returns `{ runtimeConnected, lastStamp }`. Limits: 100 clients, 1 KiB inbound frames, 1 MiB outbound buffer per client. The allowlist has the Task 7 topics, with `/scan/` as the only prefix.
+Settings: `GRIDBOT_RUNTIME_URL` (default `ws://127.0.0.1:8765`), `GRIDBOT_PORT` (8080), `GRIDBOT_UI_DIR`, `GRIDBOT_TEST_CONTROL`. The runtime socket offers both subprotocols listed in decision 0005. Browsers connect at `/ws`. `/healthz` returns `{ runtimeConnected, lastStamp }`. Limits: 100 clients, 1 KiB inbound frames, 1 MiB outbound buffer per client. The allowlist has the Task 7 topics, with `/scan/` as the only prefix.
 
 - [ ] **Step 1:** Write failing tests with a fake runtime: `forwards only allowlisted topics`, `replays world and tf_static to a new browser`, `suppresses an unchanged world`, `drops tick data but not world for a slow client`, `reports offline and reconnects`, `closes visitor sockets that send data with 1008`, `forwards a valid step only with GRIDBOT_TEST_CONTROL=1`, `rejects a step count of 0 and 1001`, `refuses a connection over the client limit`, `returns 404 for traversal paths`, `sets a same-origin CSP`.
 - [ ] **Step 2:** Run `pnpm --filter @gridbot/gateway test` and see them fail.
@@ -340,7 +340,7 @@ Playwright starts the runner with `--serve --test-control --port 18765` and the 
 **Files:**
 
 - Modify: `AGENTS.md`, `README.md`, `docs/architecture.md`, `docs/runtimes.md`, `docs/sensors.md`, `docs/testing.md`, and the READMEs for `core`, `runner`, `gateway`, `ui`, `e2e`, `assets`, `config`, `scenarios`, `docker`
-- Create: `docs/decisions/0007-scripted-drive-scenarios.md`, `docs/journal/phase-01-world-sim-view.md`
+- Create: `docs/decisions/0006-scripted-drive-scenarios.md`, `docs/journal/phase-01-world-sim-view.md`
 
 - [ ] **Step 1:** Update commands and phase status. `AGENTS.md` must cover the gateway server, Playwright install and how to run the stack.
 - [ ] **Step 2:** Open the three screenshots and check them against "robot drives smoothly, rays stop at walls".
