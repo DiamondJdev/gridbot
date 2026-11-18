@@ -1,0 +1,15 @@
+[project]
+name = "gridbot-core"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+extend = "../pyproject.toml"
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"random".msg = "Use the generator supplied by the caller."
+"time".msg = "Pass time in from the caller."

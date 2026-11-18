@@ -1,0 +1,26 @@
+[dependency-groups]
+dev = ["ruff", "pyright", "pytest", "import-linter", "pre-commit", "markdown-it-py"]
+
+[tool.uv]
+required-version = "==0.9.5"
+
+[tool.uv.workspace]
+members = ["core", "runner"]
+
+[tool.pytest.ini_options]
+addopts = "--import-mode=importlib"
+pythonpath = ["scripts"]
+testpaths = ["core/tests", "runner/tests", "scripts/tests"]
+
+[tool.pyright]
+include = ["core", "runner", "scripts"]
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"
+
+[tool.ruff]
+target-version = "py312"
+extend-exclude = ["docs/superpowers"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "TID"]

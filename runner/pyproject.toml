@@ -1,0 +1,15 @@
+[project]
+name = "gridbot-runner"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["gridbot-core"]
+
+[project.scripts]
+gridbot-run = "gridbot_runner.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.sources]
+gridbot-core = { workspace = true }

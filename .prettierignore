@@ -1,0 +1,10 @@
+docs/superpowers/
+pnpm-lock.yaml
+.superpowers/
+.venv/
+dist/
+artifacts/
+build/
+install/
+log/
+.vscode/

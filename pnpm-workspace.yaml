@@ -1,0 +1,7 @@
+packages:
+  - gateway
+  - ui
+  - e2e
+
+allowBuilds:
+  esbuild: false
