@@ -1,5 +1,5 @@
 [dependency-groups]
-dev = ["ruff", "pyright", "pytest", "import-linter", "pre-commit"]
+dev = ["ruff", "pyright", "pytest", "import-linter", "pre-commit", "markdown-it-py"]
 
 [tool.uv]
 required-version = "==0.9.5"

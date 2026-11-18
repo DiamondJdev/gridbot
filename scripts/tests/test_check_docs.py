@@ -57,16 +57,15 @@ def test_external_links_and_fenced_code_are_ignored(repo: Path) -> None:
     assert check_repo(repo) == []
 
 
-def test_github_readme_is_required(repo: Path) -> None:
-    (repo / ".github/README.md").unlink(missing_ok=True)
-    assert check_repo(repo) == [".github/README.md: missing"]
+def test_workflows_readme_is_required(repo: Path) -> None:
+    (repo / ".github/workflows/README.md").unlink()
+    assert check_repo(repo) == [".github/workflows/README.md: missing"]
 
 
-def test_github_readme_links_are_checked(repo: Path) -> None:
-    path = repo / ".github/README.md"
-    path.parent.mkdir(exist_ok=True)
+def test_workflows_readme_links_are_checked(repo: Path) -> None:
+    path = repo / ".github/workflows/README.md"
     path.write_text(HEADINGS + "[x](missing.md)\n", encoding="utf-8")
-    assert check_repo(repo) == [".github/README.md: broken link missing.md"]
+    assert check_repo(repo) == [".github/workflows/README.md: broken link missing.md"]
 
 
 def test_fenced_example_inside_blockquote_is_ignored(repo: Path) -> None:
@@ -75,6 +74,20 @@ def test_fenced_example_inside_blockquote_is_ignored(repo: Path) -> None:
         encoding="utf-8",
     )
     assert check_repo(repo) == ["README.md: broken link missing.md"]
+
+
+def test_fenced_example_inside_list_is_ignored(repo: Path) -> None:
+    (repo / "README.md").write_text(
+        "10. Example\n\n"
+        "    ```md\n    [example](ignored.md)\n    ```\n\n"
+        "    [inside](inside.md)\n\n"
+        "[outside](outside.md)\n",
+        encoding="utf-8",
+    )
+    assert check_repo(repo) == [
+        "README.md: broken link inside.md",
+        "README.md: broken link outside.md",
+    ]
 
 
 def test_heading_anchor_uses_visible_link_label(repo: Path) -> None:

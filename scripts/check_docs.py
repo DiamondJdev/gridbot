@@ -6,6 +6,8 @@ from collections.abc import Iterator
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
+from markdown_it import MarkdownIt
+
 REQUIRED_READMES = (
     "core",
     "runner",
@@ -24,7 +26,7 @@ REQUIRED_READMES = (
     "deploy",
     "scripts",
     "docs",
-    ".github",
+    ".github/workflows",
 )
 HEADINGS = ("What it does", "How it fits", "Running its tests", "Main files")
 SKIP_DIRS = {
@@ -38,11 +40,9 @@ SKIP_DIRS = {
     "install",
     "log",
 }
-FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
-QUOTE = re.compile(r"^(?: {0,3}>[ \t]?)+")
 HEADING = re.compile(r"^ {0,3}(#{1,6})\s+(.+?)(?:\s+#+)?\s*$")
-# shortcut: Supports inline links, including angle-bracket paths. Add a Markdown
-# parser if the repo adopts reference links or nested parentheses in destinations.
+# shortcut: Checks inline links. Use parser tokens if we need reference links
+# or nested parentheses in destinations.
 LINK = re.compile(
     r"\]\(\s*(?:<(?P<angle>[^>]+)>|(?P<plain>[^\s)]+))"
     r'(?:\s+"[^"]*")?\s*\)'
@@ -62,26 +62,15 @@ def markdown_files(root: Path) -> Iterator[Path]:
 
 def content_lines(path: Path) -> Iterator[str]:
     """Yield Markdown lines outside fenced code blocks."""
-    fence = ""
-    fence_depth = 0
-    for line in path.read_text(encoding="utf-8").splitlines():
-        quote = QUOTE.match(line)
-        depth = quote[0].count(">") if quote else 0
-        match = FENCE.match(line[quote.end() :] if quote else line)
-        if depth < fence_depth:
-            fence = ""
-        if fence:
-            if (
-                depth == fence_depth
-                and match
-                and match[1].startswith(fence)
-                and not match[2].strip()
-            ):
-                fence = ""
-        elif match:
-            fence = match[1]
-            fence_depth = depth
-        else:
+    text = path.read_text(encoding="utf-8")
+    fenced_lines = {
+        number
+        for token in MarkdownIt().parse(text)
+        if token.type == "fence" and token.map is not None
+        for number in range(token.map[0], token.map[1])
+    }
+    for number, line in enumerate(text.split("\n")):
+        if number not in fenced_lines:
             yield line
 
 

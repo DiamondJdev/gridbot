@@ -6,6 +6,8 @@ on:
       - "ros/**"
       - "core/**"
       - "scenarios/**"
+      - "Makefile"
+      - "scripts/step.sh"
       - "docker/ros.Dockerfile"
       - "docker/compose.yaml"
       - ".dockerignore"

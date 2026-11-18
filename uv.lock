@@ -11,6 +11,7 @@ members = [
 [manifest.dependency-groups]
 dev = [
     { name = "import-linter" },
+    { name = "markdown-it-py" },
     { name = "pre-commit" },
     { name = "pyright" },
     { name = "pytest" },
