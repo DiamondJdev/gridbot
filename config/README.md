@@ -2,16 +2,16 @@
 
 ## What it does
 
-Will hold YAML for sensor rigs, run settings and playlists.
+Holds sensor rig YAML. Run settings and playlists arrive in later phases.
 
 ## How it fits
 
-The runtimes will use run settings to choose a scenario and algorithms. See the [architecture](../docs/architecture.md).
+Scenarios name a rig from this folder. See the [architecture](../docs/architecture.md).
 
 ## Running its tests
 
-Phase 0 has no tests for this directory. Run `make verify` to check the README.
+Run `uv run pytest core/tests/test_scenario.py` to load the rigs.
 
 ## Main files
 
-Phase 0 contains this README.
+- `rigs/lidar-360.yaml` is the baseline single-lidar rig.

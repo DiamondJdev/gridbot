@@ -1,0 +1,12 @@
+# Baseline rig: one full-circle lidar mounted ahead of the robot center.
+sensors:
+  - id: lidar
+    type: lidar
+    mount: { x: 0.10, y: 0.0, yaw_deg: 0.0 }
+    fov_deg: 360
+    beams: 360
+    range_m: 10
+    noise_sigma_m: 0.02
+odometry:
+  # Standard deviation per meter traveled and per radian turned.
+  wheel_noise: { trans: 0.02, rot: 0.05 }

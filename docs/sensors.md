@@ -1,6 +1,6 @@
 # Sensors
 
-Sensor rigs are planned. Phase 0 has no sensor models or rig YAML files.
+The rig format is defined, and `config/rigs/lidar-360.yaml` is the first rig. Sensor models arrive during Phase 1.
 
 A rig in `config/rigs/` will list sensors by ID. Each entry has a type and a mount pose in meters and degrees. A lidar entry sets the field of view, beam count, maximum range and noise. The rig can also configure wheel odometry noise and gyro bias and noise. ROS will publish each mount as a static transform.
 
