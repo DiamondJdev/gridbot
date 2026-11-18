@@ -55,3 +55,15 @@ def test_external_links_and_fenced_code_are_ignored(repo: Path) -> None:
         encoding="utf-8",
     )
     assert check_repo(repo) == []
+
+
+def test_github_readme_is_required(repo: Path) -> None:
+    (repo / ".github/README.md").unlink(missing_ok=True)
+    assert check_repo(repo) == [".github/README.md: missing"]
+
+
+def test_github_readme_links_are_checked(repo: Path) -> None:
+    path = repo / ".github/README.md"
+    path.parent.mkdir(exist_ok=True)
+    path.write_text(HEADINGS + "[x](missing.md)\n", encoding="utf-8")
+    assert check_repo(repo) == [".github/README.md: broken link missing.md"]

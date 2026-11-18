@@ -24,6 +24,7 @@ REQUIRED_READMES = (
     "deploy",
     "scripts",
     "docs",
+    ".github",
 )
 HEADINGS = ("What it does", "How it fits", "Running its tests", "Main files")
 SKIP_DIRS = {
