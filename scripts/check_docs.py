@@ -39,10 +39,15 @@ SKIP_DIRS = {
     "log",
 }
 FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
+QUOTE = re.compile(r"^(?: {0,3}>[ \t]?)+")
 HEADING = re.compile(r"^ {0,3}(#{1,6})\s+(.+?)(?:\s+#+)?\s*$")
 # shortcut: Supports inline links, including angle-bracket paths. Add a Markdown
 # parser if the repo adopts reference links or nested parentheses in destinations.
-LINK = re.compile(r'\]\(\s*(?:<([^>]+)>|([^\s)]+))(?:\s+"[^"]*")?\s*\)')
+LINK = re.compile(
+    r"\]\(\s*(?:<(?P<angle>[^>]+)>|(?P<plain>[^\s)]+))"
+    r'(?:\s+"[^"]*")?\s*\)'
+)
+HEADING_LINK = re.compile(r"\[(?P<label>[^\[\]]*)" + LINK.pattern)
 INLINE_CODE = re.compile(r"(`+).*?\1")
 
 
@@ -58,13 +63,24 @@ def markdown_files(root: Path) -> Iterator[Path]:
 def content_lines(path: Path) -> Iterator[str]:
     """Yield Markdown lines outside fenced code blocks."""
     fence = ""
+    fence_depth = 0
     for line in path.read_text(encoding="utf-8").splitlines():
-        match = FENCE.match(line)
+        quote = QUOTE.match(line)
+        depth = quote[0].count(">") if quote else 0
+        match = FENCE.match(line[quote.end() :] if quote else line)
+        if depth < fence_depth:
+            fence = ""
         if fence:
-            if match and match[1].startswith(fence) and not match[2].strip():
+            if (
+                depth == fence_depth
+                and match
+                and match[1].startswith(fence)
+                and not match[2].strip()
+            ):
                 fence = ""
         elif match:
             fence = match[1]
+            fence_depth = depth
         else:
             yield line
 
@@ -74,7 +90,8 @@ def anchors(lines: list[str]) -> set[str]:
     found: set[str] = set()
     for line in lines:
         if match := HEADING.match(line):
-            slug = re.sub(r"[^\w -]", "", match[2].lower()).replace(" ", "-")
+            heading = HEADING_LINK.sub(r"\g<label>", match[2])
+            slug = re.sub(r"[^\w -]", "", heading.lower()).replace(" ", "-")
             unique = slug
             suffix = 1
             while unique in found:
@@ -104,7 +121,7 @@ def check_repo(root: Path) -> list[str]:
     for path, lines in documents.items():
         for line in lines:
             for match in LINK.finditer(INLINE_CODE.sub("", line)):
-                link = match[1] or match[2]
+                link = match["angle"] or match["plain"]
                 url = urlsplit(link)
                 if url.scheme or url.netloc:
                     continue

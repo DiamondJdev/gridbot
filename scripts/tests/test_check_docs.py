@@ -67,3 +67,19 @@ def test_github_readme_links_are_checked(repo: Path) -> None:
     path.parent.mkdir(exist_ok=True)
     path.write_text(HEADINGS + "[x](missing.md)\n", encoding="utf-8")
     assert check_repo(repo) == [".github/README.md: broken link missing.md"]
+
+
+def test_fenced_example_inside_blockquote_is_ignored(repo: Path) -> None:
+    (repo / "README.md").write_text(
+        "> ```md\n> [example](ignored.md)\n> ```\n\n[real](missing.md)\n",
+        encoding="utf-8",
+    )
+    assert check_repo(repo) == ["README.md: broken link missing.md"]
+
+
+def test_heading_anchor_uses_visible_link_label(repo: Path) -> None:
+    (repo / "README.md").write_text(
+        "[jump](#gateway-commands)\n\n## [Gateway](gateway/README.md) commands\n",
+        encoding="utf-8",
+    )
+    assert check_repo(repo) == []
