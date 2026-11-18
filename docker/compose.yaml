@@ -1,0 +1,20 @@
+name: gridbot
+services:
+  gateway:
+    image: gridbot-gateway:dev
+    build:
+      context: ..
+      dockerfile: docker/gateway.Dockerfile
+    profiles: [runner, ros]
+  runner:
+    image: gridbot-runner:dev
+    build:
+      context: ..
+      dockerfile: docker/runner.Dockerfile
+    profiles: [runner]
+  ros:
+    image: gridbot-ros:dev
+    build:
+      context: ..
+      dockerfile: docker/ros.Dockerfile
+    profiles: [ros]
