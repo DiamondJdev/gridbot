@@ -10,6 +10,7 @@ from markdown_it import MarkdownIt
 
 REQUIRED_READMES = (
     "core",
+    "core/src/gridbot_core/metrics",
     "core/src/gridbot_core/scenario",
     "core/src/gridbot_core/sensors",
     "core/src/gridbot_core/sim",
