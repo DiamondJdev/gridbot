@@ -1,0 +1,16 @@
+[importlinter]
+root_package = gridbot_core
+include_external_packages = True
+
+[importlinter:contract:core_isolation]
+name = Core stays independent of runtimes and networking
+type = forbidden
+source_modules =
+    gridbot_core
+forbidden_modules =
+    rclpy
+    foxglove
+    socket
+    http
+    urllib
+    gridbot_runner

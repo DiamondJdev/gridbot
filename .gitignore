@@ -1,0 +1,14 @@
+.venv/
+node_modules/
+dist/
+artifacts/
+build/
+install/
+log/
+.env
+.env.*
+__pycache__/
+.ruff_cache/
+.pytest_cache/
+.import_linter_cache/
+.superpowers/
