@@ -7,6 +7,7 @@ from pydantic import ValidationError
 
 from gridbot_core.scenario.models import Scenario
 from gridbot_core.sensors.rig import Rig
+from gridbot_core.types import ConfigModel
 
 
 class ScenarioError(ValueError):
@@ -37,12 +38,17 @@ def load_scenario(path: Path) -> Scenario:
         raise _validation_error(path, error) from error
 
 
-def load_rig(path: Path) -> Rig:
-    """Load a sensor rig YAML file or raise ``ScenarioError``."""
+def load_yaml_model[T: ConfigModel](path: Path, model: type[T]) -> T:
+    """Load a YAML file into ``model`` or raise ``ScenarioError``."""
     text = _read_text(path)
     try:
-        return Rig.model_validate(yaml.safe_load(text))
+        return model.model_validate(yaml.safe_load(text))
     except yaml.YAMLError as error:
         raise ScenarioError(f"{path}: invalid YAML: {error}") from error
     except ValidationError as error:
         raise _validation_error(path, error) from error
+
+
+def load_rig(path: Path) -> Rig:
+    """Load a sensor rig YAML file or raise ``ScenarioError``."""
+    return load_yaml_model(path, Rig)

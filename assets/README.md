@@ -2,16 +2,17 @@
 
 ## What it does
 
-Will hold map PNG and YAML pairs and their attribution.
+Holds map PNG and YAML pairs and their attribution.
 
 ## How it fits
 
-The core world loader will read these maps. See the [architecture](../docs/architecture.md).
+The core world loader reads these maps. See the [architecture](../docs/architecture.md).
 
 ## Running its tests
 
-Phase 0 has no tests for this directory. Run `make verify` to check the README.
+Run `uv run pytest core/tests/test_world.py` from the repo root.
 
 ## Main files
 
-Phase 0 contains this README.
+- `warehouse-01.png` and `warehouse-01.yaml` form a 20 m by 12 m warehouse map.
+- [`ATTRIBUTION.md`](ATTRIBUTION.md) records where the maps come from.
