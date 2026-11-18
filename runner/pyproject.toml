@@ -2,7 +2,10 @@
 name = "gridbot-runner"
 version = "0.1.0"
 requires-python = ">=3.12,<3.13"
-dependencies = ["gridbot-core"]
+dependencies = [
+    "foxglove-sdk>=0.31,<0.32",
+    "gridbot-core",
+]
 
 [project.scripts]
 gridbot-run = "gridbot_runner.cli:main"
