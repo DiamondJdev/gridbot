@@ -1,11 +1,11 @@
 # Testing
 
-| Target            | What it runs                                                                                                                              |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `make help`       | Lists the Make targets                                                                                                                    |
-| `make verify`     | Python lint, formatting, types, import boundaries and pytest, then docs, TypeScript lint, formatting, types, Vitest and the gateway build |
-| `make verify-ros` | Builds the ROS Compose service and runs `colcon test` and `colcon test-result --verbose` inside it                                        |
-| `make verify-all` | Runs both verification targets, then builds both Compose profiles and checks their one-shot services                                      |
+| Target            | What it runs                                                                                                                                                                    |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `make help`       | Lists the Make targets                                                                                                                                                          |
+| `make verify`     | Python lint, formatting, types, import boundaries, pytest and every scenario through `gridbot-run`, then docs, TypeScript lint, formatting, types, Vitest and the gateway build |
+| `make verify-ros` | Builds the ROS Compose service and runs `colcon test` and `colcon test-result --verbose` inside it                                                                              |
+| `make verify-all` | Runs both verification targets, then builds both Compose profiles and checks their one-shot services                                                                            |
 
 ## Debugging a failure
 
@@ -15,4 +15,4 @@
 
 The step script prints the last 40 log lines on failure and returns the command's exit code. ROS tests run in Docker. The host pytest suite collects `core/tests`, `runner/tests` and `scripts/tests`.
 
-Phase 0 tests package wiring and container commands. Scenario and browser coverage starts in Phase 1.
+`uv run gridbot-run <scenario> --trace out.jsonl` writes one JSON line per tick with the true pose, odometry pose and error, command, collisions and path length. Browser coverage arrives later in Phase 1.

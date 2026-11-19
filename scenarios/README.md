@@ -2,16 +2,16 @@
 
 ## What it does
 
-Will hold shared scenario fixtures and expected results.
+Holds scenario files. Each one names a map, rig, mode, seed, start pose, drive script and pass thresholds.
 
 ## How it fits
 
-The runner, ROS and browser tests will use the same fixtures. See the [architecture](../docs/architecture.md).
+The headless runner checks every scenario here. ROS and browser tests will use the same files. See the [architecture](../docs/architecture.md).
 
 ## Running its tests
 
-Phase 0 has no tests for this directory. Run `make verify` to check the README.
+Run `uv run gridbot-run scenarios/drive-01.json`. `make verify` runs every scenario.
 
 ## Main files
 
-Phase 0 contains this README.
+- `drive-01.json` drives a scripted loop around the center shelves.

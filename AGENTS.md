@@ -13,17 +13,18 @@ Read the package README, [architecture](docs/architecture.md) and the active pla
 
 ## Commands
 
-| Command                                | Purpose                                            |
-| -------------------------------------- | -------------------------------------------------- |
-| `uv sync --locked`                     | Install the Python workspace and development tools |
-| `pnpm install --frozen-lockfile`       | Install the TypeScript workspace                   |
-| `make help`                            | List the Make targets                              |
-| `make verify`                          | Run Python, docs and TypeScript checks             |
-| `make verify-ros`                      | Build the ROS image and run colcon tests           |
-| `make verify-all`                      | Run both checks, then the Compose smoke test       |
-| `uv run pre-commit run --all-files`    | Run the local hooks                                |
-| `uv run gridbot-run --version`         | Print the runner version                           |
-| `pnpm --filter @gridbot/gateway start` | Print the gateway version after building it        |
+| Command                                             | Purpose                                            |
+| --------------------------------------------------- | -------------------------------------------------- |
+| `uv sync --locked`                                  | Install the Python workspace and development tools |
+| `pnpm install --frozen-lockfile`                    | Install the TypeScript workspace                   |
+| `make help`                                         | List the Make targets                              |
+| `make verify`                                       | Run Python, docs and TypeScript checks             |
+| `make verify-ros`                                   | Build the ROS image and run colcon tests           |
+| `make verify-all`                                   | Run both checks, then the Compose smoke test       |
+| `uv run pre-commit run --all-files`                 | Run the local hooks                                |
+| `uv run gridbot-run --version`                      | Print the runner version                           |
+| `uv run gridbot-run scenarios/drive-01.json --json` | Run a scenario headless and print metrics          |
+| `pnpm --filter @gridbot/gateway start`              | Print the gateway version after building it        |
 
 [Testing](docs/testing.md) lists the individual checks and their logs.
 

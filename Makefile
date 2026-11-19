@@ -13,6 +13,7 @@ verify:
 	@scripts/step.sh "python types" uv run pyright
 	@scripts/step.sh "python boundaries" uv run lint-imports
 	@scripts/step.sh "python tests" uv run pytest
+	@scripts/step.sh "scenarios (runner)" sh -c 'for scenario in scenarios/*.json; do uv run gridbot-run "$$scenario" || exit 1; done'
 	@scripts/step.sh docs uv run python scripts/check_docs.py
 	@scripts/step.sh "ts lint" sh -c 'pnpm exec eslint . && pnpm exec prettier --check .'
 	@scripts/step.sh "ts types" pnpm -r typecheck
