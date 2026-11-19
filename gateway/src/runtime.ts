@@ -1,5 +1,12 @@
-import { FoxgloveClient } from "@foxglove/ws-protocol";
+import { createRequire } from "node:module";
+import type * as WsProtocol from "@foxglove/ws-protocol";
 import WebSocket from "ws";
+
+// Node loads this package's CommonJS build, whose named exports it cannot detect, so require it.
+const { FoxgloveClient } = createRequire(import.meta.url)(
+  "@foxglove/ws-protocol",
+) as typeof WsProtocol;
+type FoxgloveClient = WsProtocol.FoxgloveClient;
 
 /** The Python SDK speaks foxglove.sdk.v1; foxglove_bridge speaks the other. */
 export const SUBPROTOCOLS = [
