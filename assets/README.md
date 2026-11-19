@@ -6,7 +6,7 @@ Holds map PNG and YAML pairs and their attribution.
 
 ## How it fits
 
-The core world loader reads these maps. See the [architecture](../docs/architecture.md).
+The core world loader reads these maps, and the runner publishes the loaded map on `/sim/world` for the UI. See the [architecture](../docs/architecture.md).
 
 ## Running its tests
 

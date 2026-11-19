@@ -2,7 +2,11 @@
 
 ## Current state
 
-The Python runner runs scenarios headless and serves them over Foxglove with `--serve`. See the [runner README](../runner/README.md). ROS 2 Jazzy builds the message package and three Python packages. The launch file returns an empty launch description. The Compose profiles start one-shot containers.
+The Python runner runs scenarios headless and serves them over Foxglove with `--serve`. Live runs are paced at 20 Hz and restart after the last tick. With `--test-control`, the runner publishes one tick per step request instead, so browser tests see exact ticks. See the [runner README](../runner/README.md).
+
+ROS 2 Jazzy builds the message package and three Python packages. The launch file returns an empty launch description.
+
+The Compose `runner` profile runs the runner live with the gateway in front of it. Scenarios use the scripted `drive` mode from [decision 0006](decisions/0006-scripted-drive-scenarios.md).
 
 ## Planned contract
 

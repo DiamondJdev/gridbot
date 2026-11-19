@@ -6,13 +6,13 @@ Subscribes once to the runtime and relays allowlisted topics to browsers as JSON
 
 Browsers first receive a status message, then the cached `/sim/world` and `/tf_static`, then live topics. A browser that falls more than 1 MiB behind skips tick data but still gets the map. Any message from a browser closes its socket with code 1008, unless `GRIDBOT_TEST_CONTROL=1` is set. In that case `{"op": "step", "count": n}` with `n` from 1 to 1000 is forwarded to the runner. Production must leave that variable unset.
 
-| Variable               | Default               | Purpose                       |
-| ---------------------- | --------------------- | ----------------------------- |
-| `GRIDBOT_HOST`         | `127.0.0.1`           | Address to listen on          |
-| `GRIDBOT_PORT`         | `8080`                | HTTP and WebSocket port       |
-| `GRIDBOT_RUNTIME_URL`  | `ws://127.0.0.1:8765` | Runtime Foxglove WebSocket    |
-| `GRIDBOT_UI_DIR`       | `../ui/dist`          | Built UI files                |
-| `GRIDBOT_TEST_CONTROL` | unset                 | `1` allows test step commands |
+| Variable               | Default               | Purpose                                       |
+| ---------------------- | --------------------- | --------------------------------------------- |
+| `GRIDBOT_HOST`         | `127.0.0.1`           | Address to listen on (`0.0.0.0` in the image) |
+| `GRIDBOT_PORT`         | `8080`                | HTTP and WebSocket port                       |
+| `GRIDBOT_RUNTIME_URL`  | `ws://127.0.0.1:8765` | Runtime Foxglove WebSocket                    |
+| `GRIDBOT_UI_DIR`       | `../ui/dist`          | Built UI files (`/app/ui` in the image)       |
+| `GRIDBOT_TEST_CONTROL` | unset                 | `1` allows test step commands                 |
 
 ## How it fits
 

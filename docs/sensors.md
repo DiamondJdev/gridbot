@@ -2,7 +2,7 @@
 
 The rig format is defined, and `config/rigs/lidar-360.yaml` is the first rig. The 2D lidar and wheel odometry models are implemented. Sonar and gyro remain planned.
 
-A rig in `config/rigs/` will list sensors by ID. Each entry has a type and a mount pose in meters and degrees. A lidar entry sets the field of view, beam count, maximum range and noise. The rig can also configure wheel odometry noise and gyro bias and noise. ROS will publish each mount as a static transform.
+A rig in `config/rigs/` lists sensors by ID. Each entry has a type and a mount pose in meters and degrees. A lidar entry sets the field of view, beam count, maximum range and noise. The rig can also configure wheel odometry noise and gyro bias and noise. The runner publishes each mount on `/tf_static`, and the UI starts each sensor's rays from its mount. ROS will publish the same static transforms.
 
 | Sensor         | Planned model                                                                             |
 | -------------- | ----------------------------------------------------------------------------------------- |

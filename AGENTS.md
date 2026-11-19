@@ -1,6 +1,6 @@
 # Gridbot agent guide
 
-Gridbot is a warehouse robot simulation project. Phase 0 contains package and build scaffolding.
+Gridbot is a warehouse robot simulation project. In Phase 1 a scripted robot drives `drive-01`, and the browser draws the map, robot and lidar from live runner data.
 
 ## Where to work
 
@@ -13,23 +13,32 @@ Read the package README, [architecture](docs/architecture.md) and the active pla
 
 ## Commands
 
-| Command                                                     | Purpose                                                 |
-| ----------------------------------------------------------- | ------------------------------------------------------- |
-| `uv sync --locked`                                          | Install the Python workspace and development tools      |
-| `pnpm install --frozen-lockfile`                            | Install the TypeScript workspace                        |
-| `make help`                                                 | List the Make targets                                   |
-| `make verify`                                               | Run Python, docs and TypeScript checks                  |
-| `make verify-ros`                                           | Build the ROS image and run colcon tests                |
-| `make verify-all`                                           | Run both checks, then the Compose smoke test            |
-| `uv run pre-commit run --all-files`                         | Run the local hooks                                     |
-| `uv run gridbot-run --version`                              | Print the runner version                                |
-| `uv run gridbot-run scenarios/drive-01.json --json`         | Run a scenario headless and print metrics               |
-| `pnpm --filter @gridbot/gateway start`                      | Start the gateway after building it                     |
-| `pnpm --filter @gridbot/ui dev`                             | Serve the UI with `/ws` proxied to the gateway          |
-| `pnpm --filter @gridbot/e2e e2e`                            | Run the browser test against a fresh runner and gateway |
-| `docker compose -f docker/compose.yaml --profile runner up` | Serve the live app at http://localhost:8080             |
+| Command                                                       | Purpose                                                 |
+| ------------------------------------------------------------- | ------------------------------------------------------- |
+| `uv sync --locked`                                            | Install the Python workspace and development tools      |
+| `pnpm install --frozen-lockfile`                              | Install the TypeScript workspace                        |
+| `make help`                                                   | List the Make targets                                   |
+| `make verify`                                                 | Run Python, docs and TypeScript checks                  |
+| `make verify-ros`                                             | Build the ROS image and run colcon tests                |
+| `make verify-all`                                             | Run both checks, then the Compose smoke test            |
+| `uv run pre-commit run --all-files`                           | Run the local hooks                                     |
+| `uv run gridbot-run --version`                                | Print the runner version                                |
+| `uv run gridbot-run scenarios/drive-01.json --json`           | Run a scenario headless and print metrics               |
+| `pnpm --filter @gridbot/gateway start`                        | Start the gateway after building it                     |
+| `pnpm --filter @gridbot/ui dev`                               | Serve the UI with `/ws` proxied to the gateway          |
+| `pnpm --filter @gridbot/e2e exec playwright install chromium` | Install the browser for the Playwright test once        |
+| `pnpm --filter @gridbot/e2e e2e`                              | Run the browser test against a fresh runner and gateway |
+| `docker compose -f docker/compose.yaml --profile runner up`   | Serve the live app at http://localhost:8080             |
 
 [Testing](docs/testing.md) lists the individual checks and their logs.
+
+## Run the stack
+
+With Docker, `docker compose -f docker/compose.yaml --profile runner up` serves the app at http://localhost:8080.
+
+Without Docker, run `pnpm -r build`, then start `uv run gridbot-run scenarios/drive-01.json --serve` and `pnpm --filter @gridbot/gateway start` in two terminals and open http://127.0.0.1:8080. If Python imports fail with "No module named gridbot_core", macOS has hidden the `.venv` files. Run `chflags -R nohidden .venv` and try again.
+
+Browser tests need test control. Playwright starts its own runner with `--test-control` and a gateway with `GRIDBOT_TEST_CONTROL=1`, on ports 18765 and 18080.
 
 ## Core rules
 

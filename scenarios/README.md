@@ -6,7 +6,7 @@ Holds scenario files. Each one names a map, rig, mode, seed, start pose, drive s
 
 ## How it fits
 
-The headless runner checks every scenario here. ROS and browser tests will use the same files. See the [architecture](../docs/architecture.md).
+The headless runner checks every scenario here, and the Playwright test runs `drive-01` through the browser. ROS tests will use the same files. [Decision 0006](../docs/decisions/0006-scripted-drive-scenarios.md) explains the `drive` mode. See the [architecture](../docs/architecture.md).
 
 ## Running its tests
 
