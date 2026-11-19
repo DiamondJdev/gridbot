@@ -14,13 +14,17 @@ const HEADING_START = 0.4;
 
 type Point = { x: number; y: number };
 
+/** One sensor's rays: its origin and hits in metres in the map frame. */
+export type SensorRays = { origin: Point; hits: Point[] };
+
 export type DrawnFrame = {
   tick: number;
   robot: Pose2D;
-  /** Metres in the map frame. */
+  /** The first sensor's origin, in metres in the map frame. */
   lidarOrigin: Point;
-  /** Metres in the map frame; one per non-null range. */
+  /** Every sensor's hits in metres; one per non-null range. */
   rayHits: Point[];
+  sensors: SensorRays[];
   robotPx: Point;
 };
 
@@ -32,34 +36,39 @@ export type Palette = {
   ray: string;
 };
 
-/** Geometry for one frame. Rays start at the first mounted sensor. */
-export function drawnFrame(frame: CompleteFrame, view: View): DrawnFrame {
-  const { robot } = frame;
+function sensorRays(
+  robot: Pose2D,
+  { mount, scan }: CompleteFrame["scans"][number],
+): SensorRays {
   const cos = Math.cos(robot.theta);
   const sin = Math.sin(robot.theta);
-  let lidarOrigin = { x: robot.x, y: robot.y };
-  const rayHits: Point[] = [];
-  for (const { mount, scan } of frame.scans) {
-    const origin = {
-      x: robot.x + mount.x * cos - mount.y * sin,
-      y: robot.y + mount.x * sin + mount.y * cos,
-    };
-    if (rayHits.length === 0) lidarOrigin = origin;
-    scan.ranges.forEach((range, i) => {
-      if (range === null) return;
-      const angle =
-        robot.theta + mount.yaw + scan.angleMin + i * scan.angleIncrement;
-      rayHits.push({
-        x: origin.x + range * Math.cos(angle),
-        y: origin.y + range * Math.sin(angle),
-      });
+  const origin = {
+    x: robot.x + mount.x * cos - mount.y * sin,
+    y: robot.y + mount.x * sin + mount.y * cos,
+  };
+  const hits: Point[] = [];
+  scan.ranges.forEach((range, i) => {
+    if (range === null) return;
+    const angle =
+      robot.theta + mount.yaw + scan.angleMin + i * scan.angleIncrement;
+    hits.push({
+      x: origin.x + range * Math.cos(angle),
+      y: origin.y + range * Math.sin(angle),
     });
-  }
+  });
+  return { origin, hits };
+}
+
+/** Geometry for one frame. Each sensor's rays start at its own mount. */
+export function drawnFrame(frame: CompleteFrame, view: View): DrawnFrame {
+  const { robot } = frame;
+  const sensors = frame.scans.map((entry) => sensorRays(robot, entry));
   return {
     tick: frame.tick,
     robot,
-    lidarOrigin,
-    rayHits,
+    lidarOrigin: sensors[0]?.origin ?? { x: robot.x, y: robot.y },
+    rayHits: sensors.flatMap((sensor) => sensor.hits),
+    sensors,
     robotPx: view.toPx(robot.x, robot.y),
   };
 }
@@ -109,20 +118,26 @@ export function paint(
     map.heightM * view.pxPerM,
   );
   if (drawn === null) return;
-  const origin = view.toPx(drawn.lidarOrigin.x, drawn.lidarOrigin.y);
-  const hits = drawn.rayHits.map((hit) => view.toPx(hit.x, hit.y));
+  const sensors = drawn.sensors.map((sensor) => ({
+    origin: view.toPx(sensor.origin.x, sensor.origin.y),
+    hits: sensor.hits.map((hit) => view.toPx(hit.x, hit.y)),
+  }));
   ctx.strokeStyle = palette.ray;
   ctx.lineWidth = 1;
   ctx.globalAlpha = RAY_ALPHA;
   ctx.beginPath();
-  for (const hit of hits) {
-    ctx.moveTo(origin.x, origin.y);
-    ctx.lineTo(hit.x, hit.y);
+  for (const { origin, hits } of sensors) {
+    for (const hit of hits) {
+      ctx.moveTo(origin.x, origin.y);
+      ctx.lineTo(hit.x, hit.y);
+    }
   }
   ctx.stroke();
   ctx.globalAlpha = 1;
   ctx.fillStyle = palette.ray;
-  for (const hit of hits) ctx.fillRect(hit.x - 1, hit.y - 1, HIT_PX, HIT_PX);
+  for (const { hits } of sensors) {
+    for (const hit of hits) ctx.fillRect(hit.x - 1, hit.y - 1, HIT_PX, HIT_PX);
+  }
   paintRobot(ctx, view, drawn, palette);
 }
 

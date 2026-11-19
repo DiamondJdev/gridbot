@@ -2,7 +2,7 @@
 
 ## What it does
 
-Builds the gateway, Python runner and ROS workspace. `docker compose -f docker/compose.yaml --profile runner up` runs drive-01 live and serves the app at http://localhost:8080. The gateway is the only published port, and only on the host's loopback address. The runner's port stays inside the Compose network.
+Builds the gateway, Python runner and ROS workspace. `docker compose -f docker/compose.yaml --profile runner up` runs drive-01 live and serves the app at http://localhost:8080. The gateway is the only published port, and only on the host's loopback address. Set `GRIDBOT_HOST_PORT` to publish it on another host port; the smoke test uses `0` so Docker picks a free one. The runner's port stays inside the Compose network.
 
 ## How it fits
 

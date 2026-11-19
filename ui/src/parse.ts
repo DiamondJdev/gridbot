@@ -79,7 +79,11 @@ export function parseWorld(value: unknown): World | null {
     resolution !== null &&
     resolution > 0 &&
     width !== null &&
+    Number.isInteger(width) &&
+    width > 0 &&
     height !== null &&
+    Number.isInteger(height) &&
+    height > 0 &&
     originX !== null &&
     originY !== null &&
     Array.isArray(data) &&

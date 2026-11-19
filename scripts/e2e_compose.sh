@@ -2,6 +2,8 @@
 set -euo pipefail
 
 root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+# Health is checked inside the container, so any free host port will do.
+export GRIDBOT_HOST_PORT=0
 compose=(docker compose -f "$root/docker/compose.yaml" -p "gridbot-e2e-$$")
 profiles=(--profile runner --profile ros)
 trap '"${compose[@]}" "${profiles[@]}" down --remove-orphans || exit 1' EXIT

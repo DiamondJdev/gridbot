@@ -54,6 +54,38 @@ describe("frame assembly", () => {
     expect(bad).toEqual(ready);
   });
 
+  it.each([
+    [0, 0, []],
+    [2.5, 2, [0, 0, 0, 0, 0]],
+    [-1, -1, [0]],
+  ])("rejects a world of %s by %s cells", (width, height, data) => {
+    const ready = initialState();
+    const next = reduce(ready, {
+      type: "message",
+      topic: "/sim/world",
+      message: {
+        info: {
+          resolution: 0.5,
+          width,
+          height,
+          origin: { position: { x: 0, y: 0 } },
+        },
+        data,
+      },
+    });
+    expect(next.world).toBeNull();
+  });
+
+  it("ignores messages that are neither data nor a valid status", () => {
+    const ready = initialState();
+    const odd = [
+      { type: "ping" },
+      { type: "status", runtime: "maybe", testControl: true },
+      { type: "message" },
+    ] as unknown as ServerMessage[];
+    expect(feed(odd, ready)).toEqual(ready);
+  });
+
   it("tracks runtime status and clears the frame when offline", () => {
     const live = feed([
       { type: "status", runtime: "connected", testControl: true },

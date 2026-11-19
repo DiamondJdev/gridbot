@@ -9,8 +9,9 @@ services:
     environment:
       GRIDBOT_RUNTIME_URL: ws://runner:8765
     # Only the gateway is published, and only on the host's loopback.
+    # GRIDBOT_HOST_PORT=0 lets Docker pick a free port.
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:${GRIDBOT_HOST_PORT:-8080}:8080"
   runner:
     image: gridbot-runner:dev
     build:

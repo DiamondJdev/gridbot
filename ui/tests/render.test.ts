@@ -42,6 +42,32 @@ describe("drawnFrame", () => {
     expect(drawn.tick).toBe(5);
     close(drawn.robotPx, { x: 100, y: 50 });
   });
+
+  it("starts each lidar's rays at its own mount", () => {
+    const scanOf = (ranges: (number | null)[]) => ({
+      stamp: { sec: 0, nanosec: 0 },
+      angleMin: 0,
+      angleIncrement: Math.PI,
+      ranges,
+    });
+    const drawn = drawnFrame(
+      {
+        tick: 1,
+        collisions: 0,
+        pathLengthM: 0,
+        robot: { x: 1, y: 0.5, theta: 0 },
+        scans: [
+          { mount: { x: 0.1, y: 0, yaw: 0 }, scan: scanOf([null]) },
+          { mount: { x: -0.2, y: 0, yaw: Math.PI }, scan: scanOf([0.5]) },
+        ],
+      },
+      VIEW,
+    );
+    expect(drawn.sensors).toHaveLength(2);
+    close(drawn.sensors[1]!.origin, { x: 0.8, y: 0.5 });
+    close(drawn.sensors[1]!.hits[0]!, { x: 0.3, y: 0.5 });
+    close(drawn.lidarOrigin, { x: 1.1, y: 0.5 });
+  });
 });
 
 describe("test API", () => {

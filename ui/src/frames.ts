@@ -101,8 +101,14 @@ function receive(state: ViewState, topic: string, body: unknown): ViewState {
 
 /** Return the state after one gateway message. Never mutates `state`. */
 export function reduce(state: ViewState, message: ServerMessage): ViewState {
+  // The gateway is trusted, but its JSON is still checked before use.
   if (message.type === "message") {
-    return receive(state, message.topic, message.message);
+    return typeof message.topic === "string"
+      ? receive(state, message.topic, message.message)
+      : state;
+  }
+  if (message.type !== "status" || typeof message.testControl !== "boolean") {
+    return state;
   }
   if (message.runtime === "offline") {
     return {
@@ -111,5 +117,7 @@ export function reduce(state: ViewState, message: ServerMessage): ViewState {
       testControl: message.testControl,
     };
   }
-  return { ...state, runtime: "connected", testControl: message.testControl };
+  return message.runtime === "connected"
+    ? { ...state, runtime: "connected", testControl: message.testControl }
+    : state;
 }
