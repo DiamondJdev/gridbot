@@ -1,11 +1,11 @@
 # Testing
 
-| Target            | What it runs                                                                                                                                                                            |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `make help`       | Lists the Make targets                                                                                                                                                                  |
-| `make verify`     | Python lint, formatting, types, import boundaries, pytest and every scenario through `gridbot-run`, then docs, TypeScript lint, formatting, types, Vitest and the gateway and UI builds |
-| `make verify-ros` | Builds the ROS Compose service and runs `colcon test` and `colcon test-result --verbose` inside it                                                                                      |
-| `make verify-all` | Runs both verification targets, then builds both Compose profiles and checks their one-shot services                                                                                    |
+| Target            | What it runs                                                                                                                                                                                                           |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `make help`       | Lists the Make targets                                                                                                                                                                                                 |
+| `make verify`     | Python lint, formatting, types, import boundaries, pytest and every scenario through `gridbot-run`, then docs, TypeScript lint, formatting, types, Vitest, the gateway and UI builds, and the Playwright drive-01 test |
+| `make verify-ros` | Builds the ROS Compose service and runs `colcon test` and `colcon test-result --verbose` inside it                                                                                                                     |
+| `make verify-all` | Runs both verification targets, then builds both Compose profiles, checks their entry points and waits for the gateway to report advancing runtime stamps                                                              |
 
 ## Debugging a failure
 

@@ -9,6 +9,8 @@ const OCCUPIED = 100;
 const RGBA = 4;
 const HIT_PX = 3;
 const RAY_ALPHA = 0.22;
+/** Where the heading tick starts, as a fraction of the robot radius. */
+const HEADING_START = 0.4;
 
 type Point = { x: number; y: number };
 
@@ -136,14 +138,17 @@ function paintRobot(
   ctx.beginPath();
   ctx.arc(robotPx.x, robotPx.y, radius, 0, Math.PI * 2);
   ctx.fill();
-  // Screen y grows downward, so the heading's y component flips.
+  // The heading tick starts off-centre so the centre pixel stays the robot
+  // colour. Screen y grows downward, so the heading's y component flips.
+  const dx = Math.cos(robot.theta);
+  const dy = -Math.sin(robot.theta);
   ctx.strokeStyle = palette.ground;
   ctx.lineWidth = Math.max(1.5, radius / 5);
   ctx.beginPath();
-  ctx.moveTo(robotPx.x, robotPx.y);
-  ctx.lineTo(
-    robotPx.x + radius * Math.cos(robot.theta),
-    robotPx.y - radius * Math.sin(robot.theta),
+  ctx.moveTo(
+    robotPx.x + HEADING_START * radius * dx,
+    robotPx.y + HEADING_START * radius * dy,
   );
+  ctx.lineTo(robotPx.x + radius * dx, robotPx.y + radius * dy);
   ctx.stroke();
 }

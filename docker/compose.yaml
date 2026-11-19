@@ -6,6 +6,11 @@ services:
       context: ..
       dockerfile: docker/gateway.Dockerfile
     profiles: [runner, ros]
+    environment:
+      GRIDBOT_RUNTIME_URL: ws://runner:8765
+    # Only the gateway is published, and only on the host's loopback.
+    ports:
+      - "127.0.0.1:8080:8080"
   runner:
     image: gridbot-runner:dev
     build:

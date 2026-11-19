@@ -1,9 +1,10 @@
 import json
 import math
+import signal
 from pathlib import Path
 
 import pytest
-from gridbot_runner.cli import main
+from gridbot_runner.cli import _stop, main  # pyright: ignore[reportPrivateUsage]
 
 ROOT = Path(__file__).resolve().parents[2]
 DRIVE_01 = ROOT / "scenarios/drive-01.json"
@@ -132,3 +133,13 @@ def test_unwritable_trace_exits_2(
     trace = tmp_path / "missing-dir/trace.jsonl"
     assert main([str(DRIVE_01), "--trace", str(trace)]) == 2
     assert "trace.jsonl" in capsys.readouterr().err
+
+
+def test_stop_ignores_a_second_sigterm() -> None:
+    previous = signal.getsignal(signal.SIGTERM)
+    try:
+        with pytest.raises(SystemExit):
+            _stop(signal.SIGTERM, None)
+        assert signal.getsignal(signal.SIGTERM) == signal.SIG_IGN
+    finally:
+        signal.signal(signal.SIGTERM, previous)

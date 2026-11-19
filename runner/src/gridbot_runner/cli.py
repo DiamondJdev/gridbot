@@ -48,6 +48,8 @@ def _parser() -> argparse.ArgumentParser:
 
 
 def _stop(signum: int, frame: object) -> None:
+    # `uv run` forwards SIGTERM, so a second one can land during shutdown.
+    signal.signal(signal.SIGTERM, signal.SIG_IGN)
     raise SystemExit(EXIT_PASSED)
 
 

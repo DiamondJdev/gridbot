@@ -7,5 +7,9 @@ COPY pyproject.toml uv.lock .python-version ./
 COPY core/ core/
 COPY runner/ runner/
 RUN uv sync --locked --no-dev --no-editable --no-cache
+COPY assets/ assets/
+COPY config/ config/
+COPY scenarios/ scenarios/
 ENV PATH="/workspace/.venv/bin:$PATH"
-CMD ["gridbot-run", "--version"]
+USER nobody
+CMD ["gridbot-run", "scenarios/drive-01.json", "--serve", "--host", "0.0.0.0", "--port", "8765"]

@@ -19,6 +19,7 @@ verify:
 	@scripts/step.sh "ts types" pnpm -r typecheck
 	@scripts/step.sh "ts tests" pnpm -r test
 	@scripts/step.sh build pnpm -r build
+	@scripts/step.sh e2e pnpm --filter @gridbot/e2e e2e
 
 verify-ros:
 	@scripts/step.sh "ros tests" sh -c 'docker compose -f docker/compose.yaml --profile ros build ros && docker compose -f docker/compose.yaml --profile ros run --rm -T ros bash -c "colcon test && colcon test-result --verbose"'

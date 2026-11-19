@@ -6,26 +6,28 @@ Gridbot is a warehouse robot simulation project. Phase 0 contains package and bu
 
 1. `core/` contains pure Python libraries.
 2. `runner/` and `ros/` host the libraries in Python or ROS 2.
-3. `gateway/` will relay runtime telemetry to browsers.
-4. `ui/` draws the simulation from gateway messages. `e2e/` will exercise it in a browser.
+3. `gateway/` relays runtime telemetry to browsers and serves the UI.
+4. `ui/` draws the simulation from gateway messages. `e2e/` runs drive-01 through all of them in Playwright.
 
 Read the package README, [architecture](docs/architecture.md) and the active plan in [docs/superpowers/plans](docs/superpowers/plans) before changing a layer. Update this guide in the same commit as any change that makes it inaccurate.
 
 ## Commands
 
-| Command                                             | Purpose                                            |
-| --------------------------------------------------- | -------------------------------------------------- |
-| `uv sync --locked`                                  | Install the Python workspace and development tools |
-| `pnpm install --frozen-lockfile`                    | Install the TypeScript workspace                   |
-| `make help`                                         | List the Make targets                              |
-| `make verify`                                       | Run Python, docs and TypeScript checks             |
-| `make verify-ros`                                   | Build the ROS image and run colcon tests           |
-| `make verify-all`                                   | Run both checks, then the Compose smoke test       |
-| `uv run pre-commit run --all-files`                 | Run the local hooks                                |
-| `uv run gridbot-run --version`                      | Print the runner version                           |
-| `uv run gridbot-run scenarios/drive-01.json --json` | Run a scenario headless and print metrics          |
-| `pnpm --filter @gridbot/gateway start`              | Start the gateway after building it                |
-| `pnpm --filter @gridbot/ui dev`                     | Serve the UI with `/ws` proxied to the gateway     |
+| Command                                                     | Purpose                                                 |
+| ----------------------------------------------------------- | ------------------------------------------------------- |
+| `uv sync --locked`                                          | Install the Python workspace and development tools      |
+| `pnpm install --frozen-lockfile`                            | Install the TypeScript workspace                        |
+| `make help`                                                 | List the Make targets                                   |
+| `make verify`                                               | Run Python, docs and TypeScript checks                  |
+| `make verify-ros`                                           | Build the ROS image and run colcon tests                |
+| `make verify-all`                                           | Run both checks, then the Compose smoke test            |
+| `uv run pre-commit run --all-files`                         | Run the local hooks                                     |
+| `uv run gridbot-run --version`                              | Print the runner version                                |
+| `uv run gridbot-run scenarios/drive-01.json --json`         | Run a scenario headless and print metrics               |
+| `pnpm --filter @gridbot/gateway start`                      | Start the gateway after building it                     |
+| `pnpm --filter @gridbot/ui dev`                             | Serve the UI with `/ws` proxied to the gateway          |
+| `pnpm --filter @gridbot/e2e e2e`                            | Run the browser test against a fresh runner and gateway |
+| `docker compose -f docker/compose.yaml --profile runner up` | Serve the live app at http://localhost:8080             |
 
 [Testing](docs/testing.md) lists the individual checks and their logs.
 
