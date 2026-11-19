@@ -325,7 +325,7 @@ window.__gridbot = { getState, waitForTick, step }; // only with ?test=1
 Playwright starts the runner with `--serve --test-control --port 18765` and the gateway with `GRIDBOT_TEST_CONTROL=1` on port 18080. Compose runs the runner live and publishes only the gateway, at `127.0.0.1:8080`. The gateway image builds the UI and includes production dependencies.
 
 - [ ] **Step 1:** Write a failing `drive-01.spec.ts`:
-  - `matches the headless run`: step to tick 1128, then expect the true pose and collisions to equal `gridbot-run --json` output exactly.
+  - `matches the headless run`: send 1129 steps (the first publishes tick 0) to reach tick 1128, then expect the true pose and collisions to equal `gridbot-run --json` output exactly.
   - `draws rays that end at walls`: at ticks 0, 350 and 1128, every drawn hit is within 0.15 m of an occupied cell, and the canvas pixel at `robotPx` is not background.
   - Every test fails on a console error or failed request.
   - Save screenshots at those ticks.

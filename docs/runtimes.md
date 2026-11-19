@@ -1,8 +1,8 @@
 # Runtimes
 
-## Phase 0
+## Current state
 
-The Python runner prints its version. ROS 2 Jazzy builds the message package and three Python packages. The launch file returns an empty launch description. The Compose profiles start one-shot containers.
+The Python runner runs scenarios headless and serves them over Foxglove with `--serve`. See the [runner README](../runner/README.md). ROS 2 Jazzy builds the message package and three Python packages. The launch file returns an empty launch description. The Compose profiles start one-shot containers.
 
 ## Planned contract
 
