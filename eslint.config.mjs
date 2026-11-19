@@ -17,6 +17,6 @@ export default [
   ...tseslint.configs.recommended,
   {
     files: ["gateway/src/main.ts"],
-    languageOptions: { globals: { console: "readonly" } },
+    languageOptions: { globals: { console: "readonly", process: "readonly" } },
   },
 ];

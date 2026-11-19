@@ -24,7 +24,7 @@ Read the package README, [architecture](docs/architecture.md) and the active pla
 | `uv run pre-commit run --all-files`                 | Run the local hooks                                |
 | `uv run gridbot-run --version`                      | Print the runner version                           |
 | `uv run gridbot-run scenarios/drive-01.json --json` | Run a scenario headless and print metrics          |
-| `pnpm --filter @gridbot/gateway start`              | Print the gateway version after building it        |
+| `pnpm --filter @gridbot/gateway start`              | Start the gateway after building it                |
 
 [Testing](docs/testing.md) lists the individual checks and their logs.
 
