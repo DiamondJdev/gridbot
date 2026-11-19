@@ -1,0 +1,235 @@
+/* Data-terminal style: one dark ground, colour only on data and status. */
+:root {
+  --ground: #171719;
+  --surface: #131217;
+  --stage: #0f0f12;
+  --border: #222224;
+  --text: #ffffff;
+  --muted: #8a8c92;
+  --accent: #4a8ad6;
+  --positive: #44a282;
+  --negative: #e5566f;
+  --warning: #d9a441;
+  --map-free: #1c1c20;
+  --map-wall: #9c9ca3;
+  --gap: 24px;
+  --pad: 32px;
+  --radius: 6px;
+  --font: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--text);
+  font: 400 14px/1.45 var(--font);
+  font-variant-numeric: tabular-nums;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  padding: 0 var(--pad);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.connection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--muted);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--warning);
+}
+
+.connection:has([data-state="connected"]) .dot {
+  background: var(--positive);
+}
+
+.connection:has([data-state="offline"]) .dot {
+  background: var(--negative);
+}
+
+.canvas-area {
+  display: grid;
+  gap: var(--gap);
+  padding: var(--gap) var(--pad) var(--pad);
+}
+
+.title-row h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.subline {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+.readouts {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.readouts > div {
+  padding: 12px 16px;
+}
+
+.readouts > div + div {
+  border-left: 1px solid var(--border);
+}
+
+.readouts dt {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.readouts dd {
+  margin: 2px 0 0;
+  font-size: 22px;
+}
+
+.readouts .unit {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.readouts .bad {
+  color: var(--negative);
+}
+
+.stage {
+  position: relative;
+  margin: 0;
+}
+
+.stage canvas {
+  display: block;
+  width: 100%;
+  max-height: calc(100vh - 300px);
+  min-height: 200px;
+  aspect-ratio: 5 / 3;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--stage);
+}
+
+.empty {
+  position: absolute;
+  inset: 0 0 32px;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: var(--muted);
+}
+
+.empty[hidden] {
+  display: none;
+}
+
+figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.key {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.swatch.wall {
+  background: var(--map-wall);
+}
+
+.swatch.robot {
+  border-radius: 50%;
+  background: var(--text);
+}
+
+.swatch.ray {
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+}
+
+.scale {
+  margin-left: auto;
+}
+
+@media (max-width: 720px) {
+  :root {
+    --pad: 16px;
+    --gap: 16px;
+  }
+
+  .readouts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .readouts > div + div {
+    border-left: 0;
+  }
+
+  .readouts > div:nth-child(even) {
+    border-left: 1px solid var(--border);
+  }
+
+  .readouts > div:nth-child(n + 3) {
+    border-top: 1px solid var(--border);
+  }
+
+  .readouts > div:last-child {
+    grid-column: 1 / -1;
+    border-left: 0;
+  }
+
+  .scale {
+    margin-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

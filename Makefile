@@ -18,7 +18,7 @@ verify:
 	@scripts/step.sh "ts lint" sh -c 'pnpm exec eslint . && pnpm exec prettier --check .'
 	@scripts/step.sh "ts types" pnpm -r typecheck
 	@scripts/step.sh "ts tests" pnpm -r test
-	@scripts/step.sh build pnpm --filter @gridbot/gateway build
+	@scripts/step.sh build pnpm -r build
 
 verify-ros:
 	@scripts/step.sh "ros tests" sh -c 'docker compose -f docker/compose.yaml --profile ros build ros && docker compose -f docker/compose.yaml --profile ros run --rm -T ros bash -c "colcon test && colcon test-result --verbose"'

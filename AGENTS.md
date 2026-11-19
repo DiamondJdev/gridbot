@@ -7,7 +7,7 @@ Gridbot is a warehouse robot simulation project. Phase 0 contains package and bu
 1. `core/` contains pure Python libraries.
 2. `runner/` and `ros/` host the libraries in Python or ROS 2.
 3. `gateway/` will relay runtime telemetry to browsers.
-4. `ui/` will draw the simulation. `e2e/` will exercise it in a browser.
+4. `ui/` draws the simulation from gateway messages. `e2e/` will exercise it in a browser.
 
 Read the package README, [architecture](docs/architecture.md) and the active plan in [docs/superpowers/plans](docs/superpowers/plans) before changing a layer. Update this guide in the same commit as any change that makes it inaccurate.
 
@@ -25,6 +25,7 @@ Read the package README, [architecture](docs/architecture.md) and the active pla
 | `uv run gridbot-run --version`                      | Print the runner version                           |
 | `uv run gridbot-run scenarios/drive-01.json --json` | Run a scenario headless and print metrics          |
 | `pnpm --filter @gridbot/gateway start`              | Start the gateway after building it                |
+| `pnpm --filter @gridbot/ui dev`                     | Serve the UI with `/ws` proxied to the gateway     |
 
 [Testing](docs/testing.md) lists the individual checks and their logs.
 
